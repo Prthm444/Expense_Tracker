@@ -1,1 +1,1 @@
-![commit_png](/images/commit.png)
+![commit_png](images/commit.png)

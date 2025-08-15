@@ -4,6 +4,8 @@ This is a full-stack expense tracker application that allows users to register, 
 
 Deployed Link : https://pratham-expense.vercel.app/
 
+PostMan Pusblished Documentation :  https://documenter.getpostman.com/view/45894728/2sB3BHk8tp
+
 ## Features
 
 -    User registration and login
@@ -120,6 +122,6 @@ VITE_SERVER_URL=<your-backend-api-url>
 
 To test the API, you can use the provided Postman collection:
 
-1. Import the `Expense_Tracker_Focused.postman_collection.json` file into Postman.
-2. Set the `baseUrl` collection variable to your backend's URL (e.g., `http://localhost:8000/api/v1`).
-3. Run the requests in the collection to test the different API endpoints and scenarios.
+1. Import the `Expense_Tracker_Focused.postman_collection.json` file located in /docs into Postman.
+
+2. Run the requests in the collection to test the different API endpoints and scenarios.
