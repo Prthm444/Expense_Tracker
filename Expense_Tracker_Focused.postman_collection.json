@@ -1,0 +1,232 @@
+{
+	"info": {
+		"_postman_id": "a8f8c5c0-0e6a-4b1e-8f8f-8f8f8f8f8f8f",
+		"name": "Expense Tracker API - Focused",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Authentication",
+			"item": [
+				{
+					"name": "Register User (Success)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser{{$randomInt}}\",\n    \"email\": \"testuser{{$randomInt}}@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Login User (Success)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Set tokens as variables\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.collectionVariables.set(\"accessToken\", responseData.data.accessToken);",
+								"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser1\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Expenses",
+			"item": [
+				{
+					"name": "Create Expense (Success)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Expense\",\n    \"category\": \"Other\",\n    \"unitPrice\": 10,\n    \"quantity\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"create"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Expenses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/expense/get",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"get"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Validation Tests",
+			"item": [
+				{
+					"name": "Register with Duplicate Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser2\",\n    \"email\": \"testuser1@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Expense with Invalid Data",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"\",\n    \"category\": \"Invalid\",\n    \"unitPrice\": -10,\n    \"quantity\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"create"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Security Tests",
+			"item": [
+				{
+					"name": "Create Expense without Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Unauthorized Expense\",\n    \"category\": \"Other\",\n    \"unitPrice\": 10,\n    \"quantity\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/expense/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"expense",
+								"create"
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000/api/v1"
+		}
+	]
+}
