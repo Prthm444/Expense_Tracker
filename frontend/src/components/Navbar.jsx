@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUser } from "../redux/slices/userSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaPlus } from "react-icons/fa";
+import AddExpenseModal from "./expense/AddExpenseModal";
 
 const Navbar = () => {
 	const navigate = useNavigate();
@@ -11,6 +13,7 @@ const Navbar = () => {
 	const user = useSelector((state) => state.user.user);
 	const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 	const [showLogoutModal, setShowLogoutModal] = useState(false);
+	const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 	const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 	const navLinkClass = ({ isActive }) =>
@@ -38,17 +41,20 @@ const Navbar = () => {
 	return (
 		<>
 			<nav className="fixed top-0 left-0 right-0 z-50 bg-gray-900/90 backdrop-blur-md shadow-lg w-full px-6 py-4 flex justify-between items-center mb-4">
-				<h1 className="text-emerald-400 font-bold text-xl select-none">Expense Blogger</h1>
+				<h1 className="text-emerald-400 font-bold text-xl select-none">Expense Tracker</h1>
 				<div className="flex gap-4 items-center">
-					<NavLink to="/create" className={navLinkClass}>
-						Post
-					</NavLink>
+					{isLoggedIn && (
+						<button
+							onClick={() => setIsAddModalOpen(true)}
+							className="inline-flex items-center px-4 py-2 border border-transparent  rounded-md shadow-sm text-white bg-green-700 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+						>
+							<FaPlus className="mr-2" />
+							Add Expense
+						</button>
+					)}
+
 					<NavLink to="/" className={navLinkClass}>
-						Blogs
-					</NavLink>
-					<NavLink to="/myblogs" className={navLinkClass}>
-						{user?.username ? user.username : "My"}
-						<span></span>'s Blogs
+						{user?.username ? `${user.username}'s expenses ` : "Home"}
 					</NavLink>
 
 					{isLoggedIn ? (
@@ -65,6 +71,8 @@ const Navbar = () => {
 					)}
 				</div>
 			</nav>
+
+			{isAddModalOpen && <AddExpenseModal onClose={() => setIsAddModalOpen(false)} />}
 
 			{/* Logout Confirmation Modal */}
 			{showLogoutModal && (

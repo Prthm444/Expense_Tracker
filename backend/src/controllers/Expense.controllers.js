@@ -92,33 +92,18 @@ const updateExpense = asyncHandler(async (req, res) => {
 
 const getMyExpenses = asyncHandler(async (req, res) => {
 	const userId = req.user._id;
-	let { page = 1, limit = 5, query } = req.query;
+	let { page = 1, limit = 5, category } = req.query;
 	page = parseInt(page);
 	limit = parseInt(limit);
 
-	if (query) {
-		const expenses = await Expense.find({
-			title: { $regex: query, $options: "i" },
-			createdBy: userId,
-		});
-
-		return res.status(200).json(
-			new ApiResponse(
-				200,
-				{
-					expenses,
-					totalExpenses: expenses.length,
-					currentPage: 1,
-					totalPages: 1,
-				},
-				"Search results fetched successfully"
-			)
-		);
+	const query = { createdBy: userId };
+	if (category && category.trim() !== "" && category !== "All") {
+		query.category = category; // exact match
 	}
 
-	const totalExpenses = await Expense.countDocuments({ createdBy: userId });
+	const totalExpenses = await Expense.countDocuments(query);
 
-	const expenses = await Expense.find({ createdBy: userId })
+	const expenses = await Expense.find(query)
 		.sort({ createdAt: -1 })
 		.skip((page - 1) * limit)
 		.limit(limit);

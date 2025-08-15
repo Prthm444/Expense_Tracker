@@ -11,4 +11,5 @@ router.route("/update").post(verifyJWT, updateExpense);
 router.route("/get").get(verifyJWT, getMyExpenses);
 router.route("/get/:expense_id").get(verifyJWT, getExpense);
 
+
 export default router;
