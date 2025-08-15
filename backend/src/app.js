@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
+import UserRouter from "./routes/User.routes.js";
+
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
@@ -20,5 +22,7 @@ app.use(cookieParser());
 app.get("/etracker/test", (req, res) => {
 	res.status(200).send("hii from server, I am alive btw");
 });
+
+app.use("/user", UserRouter);
 
 export { app };
