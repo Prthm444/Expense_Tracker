@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Technical Documentation: Expense Tracker</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            margin: 1in;
+            color: #000;
+            background: white;
+        }
+        
+        h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 24pt;
+            margin-bottom: 12pt;
+            page-break-before: auto;
+        }
+        
+        h2 {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-top: 18pt;
+            margin-bottom: 6pt;
+        }
+        
+        h3 {
+            font-size: 12pt;
+            font-weight: bold;
+            margin-top: 12pt;
+            margin-bottom: 6pt;
+        }
+        
+        p {
+            margin-top: 0;
+            margin-bottom: 12pt;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-top: 0;
+            margin-bottom: 12pt;
+            padding-left: 36pt;
+        }
+        
+        li {
+            margin-bottom: 6pt;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 12pt;
+            margin-bottom: 12pt;
+        }
+        
+        th, td {
+            border: 1pt solid #000;
+            padding: 6pt;
+            text-align: left;
+            vertical-align: top;
+        }
+        
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background-color: #f5f5f5;
+            padding: 2pt;
+            font-size: 10pt;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        .toc {
+            margin-bottom: 24pt;
+        }
+        
+        .toc-item {
+            margin-bottom: 6pt;
+        }
+        
+        @media print {
+            body {
+                margin: 1in;
+            }
+        }
+        
+        .download-instructions {
+            background-color: #e6f3ff;
+            border: 1px solid #0066cc;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 11pt;
+        }
+        
+        .download-instructions h4 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="download-instructions">
+        <h4>How to Save as .docx:</h4>
+        <ol>
+            <li><strong>Print to PDF:</strong> Press Ctrl+P (or Cmd+P on Mac), select "Save as PDF"</li>
+            <li><strong>Convert to Word:</strong> Upload the PDF to Google Docs or use an online PDF-to-Word converter</li>
+            <li><strong>Alternative:</strong> Copy this content and paste into Microsoft Word, then save as .docx</li>
+        </ol>
+        <p><em>This instruction box will not appear in the final document when printed.</em></p>
+    </div>
+
+    <h1>Technical Documentation: Expense Tracker</h1>
+    
+    <h2>1. Introduction</h2>
+    <p>This document provides a detailed technical overview of the Expense Tracker application. The application is a full-stack solution designed to help users manage their expenses. It features a React-based frontend and a Node.js/Express backend, following the MERN stack architecture.</p>
+
+    <h2>2. Architecture</h2>
+    <p>The application is built using a MERN-like stack, which consists of:</p>
+    <ul>
+        <li><strong>MongoDB</strong>: A NoSQL database used to store user and expense data.</li>
+        <li><strong>Express.js</strong>: A web application framework for Node.js, used to build the backend REST API.</li>
+        <li><strong>React</strong>: A JavaScript library for building user interfaces, used for the frontend application.</li>
+        <li><strong>Node.js</strong>: A JavaScript runtime environment that executes the backend code.</li>
+    </ul>
+    <p>The frontend and backend are decoupled, communicating with each other through a RESTful API. The frontend is responsible for the user interface and user experience, while the backend handles the business logic, database interactions, and authentication.</p>
+
+    <h2>3. Module Structure</h2>
+
+    <h3>3.1. Backend</h3>
+    <p>The backend code is organized into the following directories:</p>
+    <ul>
+        <li><code>src/controllers</code>: Contains the business logic for handling API requests.</li>
+        <li><code>src/db</code>: Contains the database connection logic.</li>
+        <li><code>src/middlewares</code>: Contains the Express middleware, including authentication and error handling.</li>
+        <li><code>src/models</code>: Contains the Mongoose schemas for the database models.</li>
+        <li><code>src/routes</code>: Contains the API route definitions.</li>
+        <li><code>src/utils</code>: Contains utility classes and functions.</li>
+    </ul>
+
+    <h3>3.2. Frontend</h3>
+    <p>The frontend code is organized into the following directories:</p>
+    <ul>
+        <li><code>src/components</code>: Contains reusable React components.</li>
+        <li><code>src/hooks</code>: Contains custom React hooks.</li>
+        <li><code>src/pages</code>: Contains the main page components.</li>
+        <li><code>src/redux</code>: Contains the Redux store, slices, and actions.</li>
+        <li><code>src/services</code>: Contains the API service layer for making requests to the backend.</li>
+        <li><code>src/styles</code>: Contains the global CSS styles.</li>
+    </ul>
+
+    <h2>4. Database Schemas</h2>
+
+    <h3>4.1. User Schema (<code>User.models.js</code>)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Constraints</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>username</code></td>
+                <td><code>String</code></td>
+                <td>Required, Unique, Trimmed</td>
+            </tr>
+            <tr>
+                <td><code>email</code></td>
+                <td><code>String</code></td>
+                <td>Required, Unique, Lowercase</td>
+            </tr>
+            <tr>
+                <td><code>password</code></td>
+                <td><code>String</code></td>
+                <td>Required</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>4.2. Expense Schema (<code>Expense.models.js</code>)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Constraints</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>title</code></td>
+                <td><code>String</code></td>
+                <td>Required, Trimmed, Max Length: 100</td>
+            </tr>
+            <tr>
+                <td><code>category</code></td>
+                <td><code>String</code></td>
+                <td>Required, Enum: ["Food", "Travel", "Utilities", "Entertainment", "Other"]</td>
+            </tr>
+            <tr>
+                <td><code>isRecurring</code></td>
+                <td><code>Boolean</code></td>
+                <td>Required, Default: <code>false</code></td>
+            </tr>
+            <tr>
+                <td><code>unitPrice</code></td>
+                <td><code>Number</code></td>
+                <td>Required, Min: 0</td>
+            </tr>
+            <tr>
+                <td><code>quantity</code></td>
+                <td><code>Number</code></td>
+                <td>Required, Min: 1</td>
+            </tr>
+            <tr>
+                <td><code>totalCost</code></td>
+                <td><code>Number</code></td>
+                <td>Default: 0</td>
+            </tr>
+            <tr>
+                <td><code>createdBy</code></td>
+                <td><code>ObjectId</code></td>
+                <td>Required, Ref: "User"</td>
+            </tr>
+            <tr>
+                <td><code>date</code></td>
+                <td><code>Date</code></td>
+                <td>Default: <code>Date.now</code></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>5. API Endpoints</h2>
+
+    <h3>5.1. User API</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>POST</code></td>
+                <td><code>/user/register</code></td>
+                <td>Registers a new user.</td>
+            </tr>
+            <tr>
+                <td><code>POST</code></td>
+                <td><code>/user/login</code></td>
+                <td>Logs in a user.</td>
+            </tr>
+            <tr>
+                <td><code>POST</code></td>
+                <td><code>/user/logout</code></td>
+                <td>Logs out a user.</td>
+            </tr>
+            <tr>
+                <td><code>GET</code></td>
+                <td><code>/user/verifyUser</code></td>
+                <td>Verifies the current user.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>5.2. Expense API</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><code>POST</code></td>
+                <td><code>/expense/create</code></td>
+                <td>Creates a new expense.</td>
+            </tr>
+            <tr>
+                <td><code>GET</code></td>
+                <td><code>/expense/get</code></td>
+                <td>Gets all expenses for the user.</td>
+            </tr>
+            <tr>
+                <td><code>GET</code></td>
+                <td><code>/expense/get/:expense_id</code></td>
+                <td>Gets a single expense by ID.</td>
+            </tr>
+            <tr>
+                <td><code>POST</code></td>
+                <td><code>/expense/update</code></td>
+                <td>Updates an expense.</td>
+            </tr>
+            <tr>
+                <td><code>POST</code></td>
+                <td><code>/expense/delete</code></td>
+                <td>Deletes an expense.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>6. Authentication</h2>
+    <p>Authentication is handled using JSON Web Tokens (JWT). When a user logs in, the backend generates an <code>accessToken</code> and a <code>refreshToken</code>. The <code>accessToken</code> is sent with each subsequent request in the <code>Authorization</code> header to authenticate the user. The <code>refreshToken</code> is used to obtain a new <code>accessToken</code> when the old one expires.</p>
+
+    <h2>7. Error Handling</h2>
+    <p>The backend has a centralized error handling middleware that catches all errors and sends a consistent JSON response to the client. The response includes a <code>message</code> and an optional <code>errors</code> object for validation errors. The frontend is set up to handle these error responses and display appropriate messages to the user.</p>
+</body>
+</html>

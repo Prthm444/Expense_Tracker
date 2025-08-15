@@ -31,12 +31,14 @@ const AddExpenseModal = ({ onClose }) => {
 		setLoading(true);
 		setFormErrors({});
 
+		if (parseInt(formData.quantity) === 0 || parseInt(formData.unitPrice) === 0) {
+			toast.error("Unitprice and quantity cannot be 0 ");
+			setLoading(false);
+			return;
+		}
+
 		try {
-			const response = await axios.post(
-				`${SERVER_URL}/expense/create`,
-				formData,
-				{ withCredentials: true }
-			);
+			const response = await axios.post(`${SERVER_URL}/expense/create`, formData, { withCredentials: true });
 			toast.success("Expense added successfully!");
 			dispatch(addExpense(response.data.data));
 			onClose();
@@ -45,9 +47,7 @@ const AddExpenseModal = ({ onClose }) => {
 				setFormErrors(err.response.data.errors);
 				toast.error("Please correct the errors in the form.");
 			} else {
-				toast.error(
-					err.response?.data?.message || "Failed to add expense. Please try again."
-				);
+				toast.error(err.response?.data?.message || "Failed to add expense. Please try again.");
 			}
 		} finally {
 			setLoading(false);
@@ -74,9 +74,7 @@ const AddExpenseModal = ({ onClose }) => {
 							}`}
 							required
 						/>
-						{formErrors.title && (
-							<p className="mt-2 text-sm text-red-500">{formErrors.title}</p>
-						)}
+						{formErrors.title && <p className="mt-2 text-sm text-red-500">{formErrors.title}</p>}
 					</div>
 					<div>
 						<label htmlFor="category" className="block text-sm font-medium text-gray-300">
@@ -125,9 +123,7 @@ const AddExpenseModal = ({ onClose }) => {
 								}`}
 								required
 							/>
-							{formErrors.unitPrice && (
-								<p className="mt-2 text-sm text-red-500">{formErrors.unitPrice}</p>
-							)}
+							{formErrors.unitPrice && <p className="mt-2 text-sm text-red-500">{formErrors.unitPrice}</p>}
 						</div>
 						<div>
 							<label htmlFor="quantity" className="block text-sm font-medium text-gray-300">
@@ -144,9 +140,7 @@ const AddExpenseModal = ({ onClose }) => {
 								}`}
 								required
 							/>
-							{formErrors.quantity && (
-								<p className="mt-2 text-sm text-red-500">{formErrors.quantity}</p>
-							)}
+							{formErrors.quantity && <p className="mt-2 text-sm text-red-500">{formErrors.quantity}</p>}
 						</div>
 					</div>
 					<div className="flex justify-end space-x-4 pt-4">

@@ -40,6 +40,12 @@ const UpdateExpenseModal = ({ expense, onClose, onExpenseUpdated }) => {
 		setLoading(true);
 		setFormErrors({});
 
+		if (parseInt(formData.quantity) === 0 || parseInt(formData.unitPrice) === 0) {
+			toast.error("Unitprice and quantity cannot be 0 ");
+			setLoading(false);
+			return;
+		}
+
 		try {
 			const response = await axios.post(`${SERVER_URL}/expense/update`, { ...formData, expense_id: expense._id }, { withCredentials: true });
 			toast.success("Expense updated successfully!");
