@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import UserRouter from "./routes/User.routes.js";
+import ExpenseRouter from "./routes/Expense.routes.js";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -24,5 +25,6 @@ app.get("/etracker/test", (req, res) => {
 });
 
 app.use("/user", UserRouter);
+app.use("/expense",ExpenseRouter);
 
 export { app };

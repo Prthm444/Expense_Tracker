@@ -2,7 +2,7 @@ import { Router } from "express";
 import { checkLogin, loginUser, logoutUser, registerUser } from "../controllers/User.controllers.js";
 import { verifyJWT } from "../middlewares/Auth.middlewares.js";
 
-import { ApiResponse } from "../utils/ApiResponse.utils.js";
+
 
 const router = Router();
 
