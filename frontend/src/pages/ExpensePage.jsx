@@ -233,7 +233,7 @@ const ExpensesPage = () => {
 										<div className="text-gray-300 space-y-2">
 											<div className="flex justify-between">
 												<span>Unit Price:</span>
-												<span className="font-medium text-white">${expense.unitPrice.toFixed(2)}</span>
+												<span className="font-medium text-white">Rs. {expense.unitPrice.toFixed(2)}</span>
 											</div>
 											<div className="flex justify-between">
 												<span>Quantity:</span>
@@ -241,7 +241,7 @@ const ExpensesPage = () => {
 											</div>
 											<div className="flex justify-between text-lg">
 												<span className="font-semibold">Total:</span>
-												<span className="font-bold text-blue-400">${expense.totalCost.toFixed(2)}</span>
+												<span className="font-bold text-blue-400">Rs. {expense.totalCost.toFixed(2)}</span>
 											</div>
 										</div>
 									</div>
