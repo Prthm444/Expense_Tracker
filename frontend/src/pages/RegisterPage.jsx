@@ -10,48 +10,34 @@ export default function RegisterPage() {
 		password: "",
 	});
 	const navigate = useNavigate();
-	const [error, setError] = useState("");
-	const [successMsg, setSuccessMsg] = useState("");
+	const [formErrors, setFormErrors] = useState({});
 	const [loading, setLoading] = useState(false);
 
 	const handleChange = (e) => {
 		setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
-		setError("");
-		setSuccessMsg("");
 	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		setError("");
-		setSuccessMsg("");
+		setFormErrors({});
 		setLoading(true);
 		const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
-		if (!formData.username.trim() || !formData.email.trim() || !formData.password.trim()) {
-			setError("All fields are required");
-			setLoading(false);
-			return;
-		}
-
 		try {
-			const response = await axios.post(`${SERVER_URL}/user/register`, formData, {
+			await axios.post(`${SERVER_URL}/user/register`, formData, {
 				headers: { "Content-Type": "application/json" },
 			});
 
-			setSuccessMsg("User registered successfully!");
 			setFormData({ username: "", email: "", password: "" });
 			navigate("/login");
 			toast.success("Registration Successfull");
 		} catch (err) {
-			if (err.response?.data?.message) {
-				setError(err.response.data.message);
+			if (err.response && err.response.status === 400 && err.response.data.errors) {
+				setFormErrors(err.response.data.errors);
+				toast.error("Please correct the errors in the form.");
 			} else {
-				setError("Registration failed. Please try again.");
+				toast.error(err.response?.data?.message || "Registration failed. Please try again.");
 			}
-			toast.error(
-				err.status === 409 ? "Email or username already exists" : err.status === 400 ? "All fields are required! " : "Registration Failed.."
-			);
-			console.log(err);
 		} finally {
 			setLoading(false);
 		}
@@ -61,8 +47,6 @@ export default function RegisterPage() {
 		<div className="min-h-screen flex items-center justify-center bg-gray-900 text-gray-100 px-4">
 			<div className="max-w-md w-full bg-gray-800 p-8 rounded-lg shadow-lg">
 				<h1 className="text-3xl font-semibold mb-6 text-center">Register</h1>
-				{error && <p className="mb-4 text-red-400 font-medium text-center">{error}</p>}
-				{successMsg && <p className="mb-4 text-green-400 font-medium text-center">{successMsg}</p>}
 				<form onSubmit={handleSubmit} className="space-y-6">
 					<div>
 						<label htmlFor="username" className="block mb-2 font-medium text-gray-300">
@@ -74,11 +58,14 @@ export default function RegisterPage() {
 							type="text"
 							placeholder="Enter username"
 							autoComplete="username"
-							className="w-full px-4 py-2 rounded bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className={`w-full px-4 py-2 rounded bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+								formErrors.username ? "border-red-500" : "border-gray-600"
+							}`}
 							value={formData.username}
 							onChange={handleChange}
 							required
 						/>
+						{formErrors.username && <p className="mt-2 text-sm text-red-500">{formErrors.username}</p>}
 					</div>
 
 					<div>
@@ -91,11 +78,14 @@ export default function RegisterPage() {
 							type="email"
 							placeholder="Enter email"
 							autoComplete="email"
-							className="w-full px-4 py-2 rounded bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className={`w-full px-4 py-2 rounded bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+								formErrors.email ? "border-red-500" : "border-gray-600"
+							}`}
 							value={formData.email}
 							onChange={handleChange}
 							required
 						/>
+						{formErrors.email && <p className="mt-2 text-sm text-red-500">{formErrors.email}</p>}
 					</div>
 
 					<div>
@@ -108,12 +98,15 @@ export default function RegisterPage() {
 							type="password"
 							placeholder="Enter password"
 							autoComplete="new-password"
-							className="w-full px-4 py-2 rounded bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+							className={`w-full px-4 py-2 rounded bg-gray-700 text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+								formErrors.password ? "border-red-500" : "border-gray-600"
+							}`}
 							value={formData.password}
 							onChange={handleChange}
 							required
 							minLength={6}
 						/>
+						{formErrors.password && <p className="mt-2 text-sm text-red-500">{formErrors.password}</p>}
 					</div>
 
 					<button

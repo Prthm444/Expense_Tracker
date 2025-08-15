@@ -13,7 +13,7 @@ const expenseSlice = createSlice({
 			state.category = action.payload;
 		},
 		addExpense: (state, action) => {
-			if (state.category !== action.payload.category) return;
+			if (state.category !== action.payload.category && state.category !== "All") return;
 			state.expenses.unshift(action.payload);
 		},
 		setExpenses: (state, action) => {

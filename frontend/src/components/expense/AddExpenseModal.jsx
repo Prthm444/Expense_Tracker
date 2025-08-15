@@ -13,7 +13,7 @@ const AddExpenseModal = ({ onClose }) => {
 		quantity: "",
 	});
 	const [loading, setLoading] = useState(false);
-	const [error, setError] = useState("");
+	const [formErrors, setFormErrors] = useState({});
 
 	const dispatch = useDispatch();
 	const SERVER_URL = import.meta.env.VITE_SERVER_URL;
@@ -29,22 +29,26 @@ const AddExpenseModal = ({ onClose }) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
-		setError("");
-
-		if (parseInt(formData.quantity) <= 0) {
-			toast.error("Quantity should be atleast 1");
-			setLoading(false);
-			return;
-		}
+		setFormErrors({});
 
 		try {
-			const response = await axios.post(`${SERVER_URL}/expense/create`, formData, { withCredentials: true });
+			const response = await axios.post(
+				`${SERVER_URL}/expense/create`,
+				formData,
+				{ withCredentials: true }
+			);
 			toast.success("Expense added successfully!");
 			dispatch(addExpense(response.data.data));
 			onClose();
 		} catch (err) {
-			setError(err.response?.data?.message || "Failed to add expense. Please try again.");
-			toast.error(err.response?.data?.message || "Failed to add expense. Please try again.");
+			if (err.response && err.response.status === 400 && err.response.data.errors) {
+				setFormErrors(err.response.data.errors);
+				toast.error("Please correct the errors in the form.");
+			} else {
+				toast.error(
+					err.response?.data?.message || "Failed to add expense. Please try again."
+				);
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -65,9 +69,14 @@ const AddExpenseModal = ({ onClose }) => {
 							id="title"
 							value={formData.title}
 							onChange={handleChange}
-							className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+							className={`mt-1 block w-full bg-gray-700 border rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 ${
+								formErrors.title ? "border-red-500" : "border-gray-600"
+							}`}
 							required
 						/>
+						{formErrors.title && (
+							<p className="mt-2 text-sm text-red-500">{formErrors.title}</p>
+						)}
 					</div>
 					<div>
 						<label htmlFor="category" className="block text-sm font-medium text-gray-300">
@@ -111,9 +120,14 @@ const AddExpenseModal = ({ onClose }) => {
 								id="unitPrice"
 								value={formData.unitPrice}
 								onChange={handleChange}
-								className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+								className={`mt-1 block w-full bg-gray-700 border rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 ${
+									formErrors.unitPrice ? "border-red-500" : "border-gray-600"
+								}`}
 								required
 							/>
+							{formErrors.unitPrice && (
+								<p className="mt-2 text-sm text-red-500">{formErrors.unitPrice}</p>
+							)}
 						</div>
 						<div>
 							<label htmlFor="quantity" className="block text-sm font-medium text-gray-300">
@@ -125,12 +139,16 @@ const AddExpenseModal = ({ onClose }) => {
 								id="quantity"
 								value={formData.quantity}
 								onChange={handleChange}
-								className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+								className={`mt-1 block w-full bg-gray-700 border rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-blue-500 ${
+									formErrors.quantity ? "border-red-500" : "border-gray-600"
+								}`}
 								required
 							/>
+							{formErrors.quantity && (
+								<p className="mt-2 text-sm text-red-500">{formErrors.quantity}</p>
+							)}
 						</div>
 					</div>
-					{error && <p className="text-red-500 text-sm">{error}</p>}
 					<div className="flex justify-end space-x-4 pt-4">
 						<button
 							type="button"

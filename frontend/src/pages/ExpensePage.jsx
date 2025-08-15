@@ -64,7 +64,7 @@ const ExpensesPage = () => {
 		};
 
 		fetchMyExpenses();
-	}, [SERVER_URL, page, limit, dispatch, selectedCategory]);
+	}, [SERVER_URL, page, limit, dispatch, selectedCategory, deleteModal]);
 
 	const handleEditClick = (expense) => {
 		setExpenseToUpdate(expense);
@@ -81,7 +81,7 @@ const ExpensesPage = () => {
 	};
 
 	const handleCategoryChange = (e) => {
-		setSelectedCategory(e.target.value === "All" ? "" : e.target.value);
+		setSelectedCategory(e.target.value);
 		dispatch(setCategory(e.target.value));
 		setPage(1);
 	};
@@ -97,13 +97,7 @@ const ExpensesPage = () => {
 				setPage(page - 1);
 			}
 		} catch (err) {
-			toast.error(
-				err.response?.status === 404
-					? "Expense Not found!"
-					: err.response?.status === 403
-					? "You are not authorized for this action!"
-					: "Failed to delete expense. Please try again."
-			);
+			toast.error(err.response?.data?.message || "Failed to delete expense. Please try again.");
 		} finally {
 			setDeleteModal(false);
 			setSelectedExpense(null);

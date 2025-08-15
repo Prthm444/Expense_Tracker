@@ -27,4 +27,8 @@ app.get("/etracker/test", (req, res) => {
 app.use("/user", UserRouter);
 app.use("/expense",ExpenseRouter);
 
+import { errorHandler } from "./middlewares/Error.middlewares.js";
+
+app.use(errorHandler);
+
 export { app };
