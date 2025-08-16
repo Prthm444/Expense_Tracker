@@ -4,7 +4,11 @@ This is a full-stack expense tracker application that allows users to register, 
 
 Deployed Link : https://pratham-expense.vercel.app/
 
-PostMan Pusblished Documentation :  https://documenter.getpostman.com/view/45894728/2sB3BHk8tp
+(username- pratham , password - pratham3x4 )
+
+Video Demo Link : https://www.loom.com/share/9720ee6d2856499ba2757c0bcc3134b2?sid=a3c59868-d218-4865-b90b-a4300d510721
+
+PostMan Pusblished Documentation : https://documenter.getpostman.com/view/45894728/2sB3BHk8tp
 
 ## Features
 
